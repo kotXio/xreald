@@ -1,0 +1,16 @@
+XRealD
+Copyright 2026 Kostiantyn Andriiuk <konstantin@andriyuk.com>
+Source: https://github.com/kotXio/xreald
+Main project: https://github.com/kotXio/Perideck
+
+Original code and code examples use the Apache License, Version 2.0.
+Original documentation uses Creative Commons Attribution 4.0 International.
+Dependencies keep their original licenses and copyright notices in LICENSES.
+
+The protocol implementation is original Rust code informed by independent
+XREAL 1S observations and the references credited in docs/sources.md.
+No manufacturer SDK or third-party driver source is copied into src/.
+
+The ARM64 executables are our compilation of this source and its locked Cargo
+dependencies, linked with the Rust standard library and musl. Dependency notices
+and original license texts are included in LICENSES; they are not relicensed.

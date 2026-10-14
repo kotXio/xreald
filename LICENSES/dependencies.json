@@ -1,0 +1,138 @@
+[
+  {
+    "name": "itoa",
+    "version": "1.0.18",
+    "authors": [
+      "David Tolnay <dtolnay@gmail.com>"
+    ],
+    "repository": "https://github.com/dtolnay/itoa",
+    "license": "MIT OR Apache-2.0",
+    "crate_sha256": "8f42a60cbdf9a97f5d2305f08a87dc4e09308d1276d28c869c684d7777685682",
+    "notices": "dependencies/itoa-1.0.18"
+  },
+  {
+    "name": "libc",
+    "version": "0.2.190",
+    "authors": [],
+    "repository": "https://github.com/rust-lang/libc",
+    "license": "MIT OR Apache-2.0",
+    "crate_sha256": "ce5d3ddc6d3fa000eb1536d85e147bfe31aacaba692ed6a876f95cb7c855be78",
+    "notices": "dependencies/libc-0.2.190"
+  },
+  {
+    "name": "memchr",
+    "version": "2.8.3",
+    "authors": [
+      "Andrew Gallant <jamslam@gmail.com>",
+      "bluss"
+    ],
+    "repository": "https://github.com/BurntSushi/memchr",
+    "license": "Unlicense OR MIT",
+    "crate_sha256": "cf8baf1c55e62ffcace7a9f06f4bd9cd3f0c4beb022d3b367256b91b87513d98",
+    "notices": "dependencies/memchr-2.8.3"
+  },
+  {
+    "name": "proc-macro2",
+    "version": "1.0.107",
+    "authors": [
+      "David Tolnay <dtolnay@gmail.com>",
+      "Alex Crichton <alex@alexcrichton.com>"
+    ],
+    "repository": "https://github.com/dtolnay/proc-macro2",
+    "license": "MIT OR Apache-2.0",
+    "crate_sha256": "985e7ec9bb745e6ce6535b544d84d6cd6f7ad8bd711c398938ae983b91a766d9",
+    "notices": "dependencies/proc-macro2-1.0.107"
+  },
+  {
+    "name": "quote",
+    "version": "1.0.47",
+    "authors": [
+      "David Tolnay <dtolnay@gmail.com>"
+    ],
+    "repository": "https://github.com/dtolnay/quote",
+    "license": "MIT OR Apache-2.0",
+    "crate_sha256": "1fbf4db142a473a8d80c26bbf18454ed458bf8d26c8219c331daecfdbd079001",
+    "notices": "dependencies/quote-1.0.47"
+  },
+  {
+    "name": "serde",
+    "version": "1.0.229",
+    "authors": [
+      "Erick Tryzelaar <erick.tryzelaar@gmail.com>",
+      "David Tolnay <dtolnay@gmail.com>"
+    ],
+    "repository": "https://github.com/serde-rs/serde",
+    "license": "MIT OR Apache-2.0",
+    "crate_sha256": "4148590afebada386688f18773da617792bf2ef03ffc1e4cbd2b1d45b023e0ba",
+    "notices": "dependencies/serde-1.0.229"
+  },
+  {
+    "name": "serde_core",
+    "version": "1.0.229",
+    "authors": [
+      "Erick Tryzelaar <erick.tryzelaar@gmail.com>",
+      "David Tolnay <dtolnay@gmail.com>"
+    ],
+    "repository": "https://github.com/serde-rs/serde",
+    "license": "MIT OR Apache-2.0",
+    "crate_sha256": "67dca2c9c51e58a4791a4b1ed58308b39c64224d349a935ab5039aa360942a48",
+    "notices": "dependencies/serde_core-1.0.229"
+  },
+  {
+    "name": "serde_derive",
+    "version": "1.0.229",
+    "authors": [
+      "Erick Tryzelaar <erick.tryzelaar@gmail.com>",
+      "David Tolnay <dtolnay@gmail.com>"
+    ],
+    "repository": "https://github.com/serde-rs/serde",
+    "license": "MIT OR Apache-2.0",
+    "crate_sha256": "e7a5d71263a5a7d47b41f6b3f06ba276f10cc18b0931f1799f710578e2309348",
+    "notices": "dependencies/serde_derive-1.0.229"
+  },
+  {
+    "name": "serde_json",
+    "version": "1.0.151",
+    "authors": [
+      "Erick Tryzelaar <erick.tryzelaar@gmail.com>",
+      "David Tolnay <dtolnay@gmail.com>"
+    ],
+    "repository": "https://github.com/serde-rs/json",
+    "license": "MIT OR Apache-2.0",
+    "crate_sha256": "c841b55ecdae098c80dcae9cf767f6f8a0c2cdb3416bbef72181df4d0fe73f14",
+    "notices": "dependencies/serde_json-1.0.151"
+  },
+  {
+    "name": "syn",
+    "version": "3.0.6",
+    "authors": [
+      "David Tolnay <dtolnay@gmail.com>"
+    ],
+    "repository": "https://github.com/dtolnay/syn",
+    "license": "MIT OR Apache-2.0",
+    "crate_sha256": "8593e8e72159ed2257d083c7a454a85cbf854f37a0966d8d483aff8c8a3ebcee",
+    "notices": "dependencies/syn-3.0.6"
+  },
+  {
+    "name": "unicode-ident",
+    "version": "1.0.26",
+    "authors": [
+      "David Tolnay <dtolnay@gmail.com>"
+    ],
+    "repository": "https://github.com/dtolnay/unicode-ident",
+    "license": "(MIT OR Apache-2.0) AND Unicode-3.0",
+    "crate_sha256": "d245f478577f809a851594d02313b640fb437e0bb33866753cff937863096954",
+    "notices": "dependencies/unicode-ident-1.0.26"
+  },
+  {
+    "name": "zmij",
+    "version": "1.0.23",
+    "authors": [
+      "David Tolnay <dtolnay@gmail.com>"
+    ],
+    "repository": "https://github.com/dtolnay/zmij",
+    "license": "MIT",
+    "crate_sha256": "29666d0abbfad1e3dc4dcf6144730dd3a3ab225bbbdac83319345b1b44ccfc1b",
+    "notices": "dependencies/zmij-1.0.23"
+  }
+]

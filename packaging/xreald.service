@@ -1,0 +1,16 @@
+[Unit]
+Description=XREAL telemetry, button events and known control reads
+
+[Service]
+Type=simple
+ExecStart=%h/.local/bin/xreald
+RuntimeDirectory=xreald
+RuntimeDirectoryMode=0700
+UMask=0077
+NoNewPrivileges=yes
+Restart=on-failure
+RestartSec=2
+TimeoutStopSec=5
+
+[Install]
+WantedBy=default.target

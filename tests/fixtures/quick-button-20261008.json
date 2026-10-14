@@ -1,0 +1,106 @@
+{
+  "source": "owner Quick Button test on XREAL1S, firmware1.9.1.20260914175625",
+  "transport": "TCP0x272e, code4, USB3318:043e",
+  "timestamps": "relative host receive; raw device u32 was coarse and not used",
+  "expected": [
+    "single",
+    "single",
+    "double",
+    "long",
+    "single",
+    "single",
+    "double"
+  ],
+  "events": [
+    {
+      "received_ns": 0,
+      "state": "down",
+      "code": 4
+    },
+    {
+      "received_ns": 328822382,
+      "state": "up",
+      "code": 4
+    },
+    {
+      "received_ns": 2003411293,
+      "state": "down",
+      "code": 4
+    },
+    {
+      "received_ns": 2228926610,
+      "state": "up",
+      "code": 4
+    },
+    {
+      "received_ns": 4539682709,
+      "state": "down",
+      "code": 4
+    },
+    {
+      "received_ns": 4698788912,
+      "state": "up",
+      "code": 4
+    },
+    {
+      "received_ns": 4778828392,
+      "state": "down",
+      "code": 4
+    },
+    {
+      "received_ns": 4919028575,
+      "state": "up",
+      "code": 4
+    },
+    {
+      "received_ns": 7398876683,
+      "state": "down",
+      "code": 4
+    },
+    {
+      "received_ns": 9568803220,
+      "state": "up",
+      "code": 4
+    },
+    {
+      "received_ns": 12548840939,
+      "state": "down",
+      "code": 4
+    },
+    {
+      "received_ns": 12748948992,
+      "state": "up",
+      "code": 4
+    },
+    {
+      "received_ns": 17125383183,
+      "state": "down",
+      "code": 4
+    },
+    {
+      "received_ns": 17328738670,
+      "state": "up",
+      "code": 4
+    },
+    {
+      "received_ns": 21598892280,
+      "state": "down",
+      "code": 4
+    },
+    {
+      "received_ns": 21758983198,
+      "state": "up",
+      "code": 4
+    },
+    {
+      "received_ns": 21869476677,
+      "state": "down",
+      "code": 4
+    },
+    {
+      "received_ns": 22019119871,
+      "state": "up",
+      "code": 4
+    }
+  ]
+}

@@ -1,0 +1,7 @@
+/target/
+/build/
+/.local/
+__pycache__/
+*.py[cod]
+*.sock
+.DS_Store

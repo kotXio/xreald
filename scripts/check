@@ -1,0 +1,11 @@
+#!/bin/sh
+# SPDX-License-Identifier: Apache-2.0
+set -eu
+base=$(CDPATH= cd -- "$(dirname -- "$0")/.." && pwd)
+cd "$base"
+cargo fmt --all -- --check
+cargo test --locked --all-targets
+cargo clippy --locked --all-targets -- -D warnings
+cargo build --locked --release
+python3 -B tests/integration.py
+python3 -B -m unittest discover -s tests -p 'test_*.py'
