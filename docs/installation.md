@@ -58,12 +58,32 @@ Files: `~/.local/bin/xreald`, `~/.local/bin/xrealctl`,
 The private socket is `$XDG_RUNTIME_DIR/xreald/control.sock`, mode `0600`,
 inside a `0700` directory. Applications using it must run as the same user.
 
+## Upgrade from 0.1.2
+
+From the new bundle, replace the existing installation as your normal user:
+
+```sh
+systemctl --user disable --now xreald.service
+python3 -B install.py remove --apply
+systemctl --user daemon-reload
+python3 -B install.py install --apply
+systemctl --user daemon-reload
+systemctl --user enable --now xreald.service
+```
+
+This keeps your USB network settings and input rule. Connected applications need
+to reconnect to the service. Removal checks the old installation receipt and
+refuses changed files; a manually installed copy needs its original uninstall
+procedure. Keep the old bundle if you want to return to it.
+
 ## Problems and fixes
 
 - **No control/IMU connection:** check the USB NCM address, cable and the
   `discovery`/`control` fields in `~/.local/bin/xrealctl status`.
 - **Input permission errors:** install the scoped rule above and reconnect.
 - **IMU is offline with no subscribers:** expected; start `watch imu` to request it.
+- **Wearing state is unknown:** take the glasses off and put them on. The state
+  stays unknown until the glasses send an event on the current control connection.
 - **Several matching glasses:** connect only one pair at a time.
 - **Service fails:** use `journalctl --user -u xreald.service -n 30 --no-pager`.
 - **Installer finds existing files:** it will not migrate an older/manual setup.

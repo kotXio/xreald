@@ -24,6 +24,10 @@ The Quick Button timing fixture is an anonymized relative-time capture from a
 1S running firmware `1.9.1.20260914175625`. It contains button timings, not device
 identity or sensor recordings. Gesture recognition uses only Quick Button code 4.
 
+Wearing detection uses independently observed XREAL 1S control events:
+opcode `0x273d`, body `18 01` for worn and `18 02` for not worn.
+Other payloads are treated as unknown.
+
 ## License scope
 
 - Our code and examples: [Apache 2.0](../LICENSE), with [NOTICE](../NOTICE).
@@ -36,4 +40,4 @@ identity or sensor recordings. Gesture recognition uses only Quick Button code 4
   and [musl copyright/license](../LICENSES/musl-COPYRIGHT.txt).
 
 The binaries are compiled by us from the supplied source. Their build manifest
-and checksums are in [binaries/0.1.2-linux-arm64](../binaries/0.1.2-linux-arm64/README.md).
+and checksums are in [binaries/0.1.3-linux-arm64](../binaries/0.1.3-linux-arm64/README.md).

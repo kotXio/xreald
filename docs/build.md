@@ -27,7 +27,7 @@ macOS builds are development tools; USB discovery/input support targets Linux.
 ## Release bundle
 
 For maintainers, copy the two binaries and manifest/checksums from a successful
-build into `binaries/0.1.2-linux-arm64`, then run:
+build into `binaries/0.1.3-linux-arm64`, then run:
 
 ```sh
 python3 -B scripts/package.py --output build/releases

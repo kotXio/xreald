@@ -137,7 +137,7 @@ def permissions(user, remove, apply):
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('action', choices=('install','remove','permissions','remove-permissions'))
-    parser.add_argument('--bundle', type=Path, default=a.ROOT/'binaries/0.1.2-linux-arm64')
+    parser.add_argument('--bundle', type=Path, default=a.ROOT/'binaries'/f'{a.version()}-linux-arm64')
     parser.add_argument('--user', help='Target account for the root-only input rule operation')
     parser.add_argument('--apply', action='store_true')
     args = parser.parse_args()

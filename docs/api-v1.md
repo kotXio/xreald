@@ -17,14 +17,14 @@ Responses contain the matching ID and `result` or `error`. Server events contain
 
 | Method | Params | Result |
 | --- | --- | --- |
-| `status` | `{}` | Discovery, channels, fresh data, input access/errors, rates, CPU/RSS, counters |
+| `status` | `{}` | Discovery, channels, wearing state, fresh data, input access/errors, rates, CPU/RSS, counters |
 | `capabilities` | `{}` | Known reads, disabled features, live successes/errors |
 | `get` | `name`, optional bool `cached` | Value and time obtained; default requests live GET |
 | `set` | object | Error -32030; no device write is sent |
 | `subscribe` | `topics`, `format=json/native`, `rate_hz=1..240` | Replaces subscriptions on this connection |
 | `unsubscribe` | `{}` | Removes all subscriptions on this connection |
 
-Topics: `imu`, `buttons`, `gestures`, `state`. Native format requires IMU; native input rate
+Topics: `imu`, `buttons`, `gestures`, `wearing`, `state`. Native format requires IMU; native input rate
 is not throttled by `rate_hz`. One backend IMU connection serves all subscribers.
 Default `--imu-batch-ms 8` adds up to 8 ms of intentional receive buffering, plus
 normal scheduling delay. Every native frame is retained. Use `--imu-batch-ms 0`
@@ -41,6 +41,36 @@ are invalidated when control disconnects. No old One/Pro EDID enum is applied to
 Health snapshots summarize factory availability instead of copying its full table;
 use explicit `get factory.config`. Config is limited to 256 KiB / 32768 JSON nodes;
 oversized replies produce an error rather than unbounded allocation.
+
+## Wearing events (0.1.3)
+
+Subscribe to `wearing` to receive the current state immediately after the
+subscription response, followed by device events. `status.wearing` contains
+the same snapshot. This subscription does not open the IMU or poll the glasses.
+
+```json
+{"jsonrpc":"2.0","id":1,"method":"subscribe","params":{"topics":["wearing"]}}
+```
+
+Example event:
+
+```json
+{"jsonrpc":"2.0","method":"wearing","params":{"state":"worn","received_monotonic_ns":2000000000}}
+```
+
+States are `worn`, `not_worn` and `unknown`. The timestamp is nanoseconds since
+daemon startup, or `null` before a device event. Starting the daemon or losing
+and restoring the control connection resets the state to `unknown`; malformed
+wearing messages also clear the previous state. A new subscriber receives only
+the current connection's state, not a value left over from a disconnected pair.
+
+Pause automatic actions on `unknown` or a lost API connection. Require a stable
+`worn` state and deliberate user input before resuming automatic clicks.
+The `proximity.enabled` GET is a device setting, not the current wearing state.
+
+Wearing events retain their order and are not coalesced. A client that cannot
+keep up is disconnected when its output queue fills. `unsubscribe`, or replacing
+the subscription without `wearing`, stops future wearing events.
 
 ## Telemetry and time
 

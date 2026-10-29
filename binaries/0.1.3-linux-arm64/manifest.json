@@ -1,26 +1,27 @@
 {
   "format": 1,
-  "version": "0.1.2",
+  "version": "0.1.3",
   "target": "aarch64-unknown-linux-musl",
   "rustc": "rustc 1.99.0 (b940084d7 2026-09-28)",
   "profile": "release; thin LTO; one codegen unit; stripped; remapped source paths",
   "sources": {
-    "Cargo.toml": "ae82df4cc6ecebf46bb622463a247c953eae7920566bb1217103527837c34ba0",
-    "Cargo.lock": "e523e9d2c011a022e6b05c384d15567c05591b23d87f8984c2c6469aec609ff3",
+    "Cargo.toml": "71ee0edbe883e66e3db346352835d895d576ca3f7a7cfd96ec86a6218c37c71d",
+    "Cargo.lock": "014eb4f1fc5e8a3cc6e44b10127ed406c72a35c213a23f6d42b9af462a4ecdbe",
     "src/api.rs": "26b5d716202b660ecae927365ec2fcccbeb5b6c1420d0032ba9efaa2ed79e9fd",
-    "src/bin/xrealctl.rs": "6f8f8c2b32f4817ad7159f6317daeea718202efa3bb257429ec9e6905bfb87b5",
+    "src/bin/xrealctl.rs": "56572123be54d13ae0518e6cec22335f6e52293fd21110366fd43be28ca5e557",
     "src/bin/xreald.rs": "6d107a6c4c3d0d54468ced42e89c8c0daad51252dd0dfbc8971c342e620719cc",
     "src/catalog.rs": "9fd1460b1ba1dab5d4792f6abcc5e2a409f838444cbc32fe70cbcfc98b07275e",
-    "src/daemon.rs": "2961a30adc9d7b0264bd2694caba671c722d37dd88411bf2f0483bc379cbe8a9",
+    "src/daemon.rs": "5f0ee4c39a5b2dcfb4c3e00ea9069a46c2439ded9b55d5cd3b450c4418d8fc3a",
     "src/device.rs": "05a403c63635cd12362cf12999d0941cf4c4cfbb6dff26066e744b7175e13167",
     "src/gestures.rs": "853652cb3ce8ddbfef8053636b22123675344593b11ad2cd04367ac10cc0622b",
     "src/imu.rs": "5a66870a94dc1a1d33e3bfaac34284a3ec29afcd3a5c63ae352a479c786178c4",
     "src/keys.rs": "4e96134217009da266a23d353266898df15844402f98408433868e6287180c69",
-    "src/lib.rs": "de91af6d7edb5123562192176621595de01d84f09905a6e755ee240140d06fc2",
-    "src/protocol.rs": "ddb1285fe93ddc6e091dc7df178e46c5facc9eec1fa5ab7168359f070c2b1d71"
+    "src/lib.rs": "c8db83728f7c4bbd7f9fe34f7890ec85338c782eed4a2489842f662b81c57464",
+    "src/protocol.rs": "ddb1285fe93ddc6e091dc7df178e46c5facc9eec1fa5ab7168359f070c2b1d71",
+    "src/wearing.rs": "d06bda78457f797e96ac62c946f68234be1929fa2c6e6452240236b1c1208bd9"
   },
   "binaries": {
-    "xreald": "8fdf8c9f0f5989466461305b296de26df6d6e46f565dc2d32581d791d2a44ed6",
-    "xrealctl": "17240cd7f1cda1b63c8e5ffbb6150d3a0f75322a42ba9e924c2748142418f299"
+    "xreald": "0e6e6e02e1a283d5b5f3be881b6bee8a35ee0ddd1e055b0c3fcca4c665dde34b",
+    "xrealctl": "aead2d5b6b438bde3b7438657237d60b5c6bf569bc4f56c816ffc28c6beb11cd"
   }
 }

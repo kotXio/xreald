@@ -1,4 +1,4 @@
-# XRealD 0.1.2 — Linux ARM64
+# XRealD 0.1.3 — Linux ARM64
 
 Our static, stripped builds of `xreald` and `xrealctl`, compiled from the matching
 source in this repository with Rust 1.99.0 and target `aarch64-unknown-linux-musl`.

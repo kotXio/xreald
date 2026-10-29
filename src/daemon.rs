@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: Apache-2.0
 // Copyright 2026 Kostiantyn Andriiuk <konstantin@andriyuk.com>
-use crate::{api, catalog, device, gestures, imu, keys, protocol};
+use crate::{api, catalog, device, gestures, imu, keys, protocol, wearing};
 use serde_json::{json, Value};
 use std::collections::{BTreeMap, VecDeque};
 use std::fs::{self, File};
@@ -209,6 +209,7 @@ struct Subscription {
     imu: bool,
     buttons: bool,
     gestures: bool,
+    wearing: bool,
     state: bool,
     native: bool,
     interval: u64,
@@ -342,6 +343,7 @@ pub struct Server {
     holds: keys::Holds,
     quick_gestures: gestures::QuickGestures,
     snapshot: imu::Snapshot,
+    wearing: wearing::Wearing,
     pending: BTreeMap<u32, Pending>,
     next_transaction: u32,
     cache: BTreeMap<String, Value>,
@@ -414,6 +416,7 @@ impl Server {
             holds: keys::Holds::default(),
             quick_gestures: gestures::QuickGestures::default(),
             snapshot: imu::Snapshot::default(),
+            wearing: wearing::Wearing::default(),
             pending: BTreeMap::new(),
             next_transaction: 1,
             cache: BTreeMap::new(),
@@ -516,6 +519,8 @@ impl Server {
         if control {
             self.control.disconnect(now, reason);
             self.cache.clear();
+            self.wearing = wearing::Wearing::default();
+            self.publish_wearing();
             self.holds.reset_source("control");
             self.quick_gestures.reset();
             let pending = std::mem::take(&mut self.pending);
@@ -533,6 +538,10 @@ impl Server {
         self.notify("connection",json!({"channel":if control{"control"}else{"imu"},"online":false,"reason":reason.chars().take(128).collect::<String>()}));
     }
     fn connected(&mut self, control: bool, now: u64) {
+        if control {
+            self.wearing = wearing::Wearing::default();
+            self.publish_wearing();
+        }
         if !control {
             let epoch = self.snapshot.epoch + 1;
             self.snapshot = imu::Snapshot {
@@ -626,7 +635,7 @@ impl Server {
             "imu":{"online":self.imu.online,"fresh":self.snapshot.fresh(now)&&self.imu.online,"epoch":self.snapshot.epoch,"sequence":self.snapshot.sequence,"error":self.imu.last_error,"subscribers":self.clients.values().filter(|c|c.subscription.as_ref().is_some_and(|s|s.imu)).count()},
             "input":{"readable_nodes":self.inputs.keys().collect::<Vec<_>>(),"errors":self.input_errors,"exclusive_grab":false,"button_events":self.metrics.buttons,"gesture_events":self.metrics.gestures},
             "metrics":{"cpu_total_ns":cpu_ns,"resident_bytes":resident_bytes,"imu_frames":self.metrics.imu_frames,"imu_invalid":self.metrics.imu_invalid,"rates_hz":{"gyro":self.metrics.rates[0],"accel":self.metrics.rates[1],"mag":self.metrics.rates[2],"temperature":self.metrics.rates[3]},"control_unknown":self.metrics.control_unknown,"control_errors":self.metrics.control_errors,"api_errors":self.metrics.api_errors,"clients_evicted":self.metrics.clients_evicted,"telemetry_replaced":self.metrics.telemetry_replaced,"input_gaps":self.metrics.input_gaps,"connections":self.metrics.reconnects,"pending_requests":self.pending.len()},
-            "parameter_results":parameter_results,"parameter_errors":self.parameter_errors,"set_enabled":false})
+            "wearing":self.wearing.value(),"parameter_results":parameter_results,"parameter_errors":self.parameter_errors,"set_enabled":false})
     }
     fn request(&mut self, client: u64, request: Value, now: u64) {
         if self.clients.get(&client).is_none_or(|c| c.dead) {
@@ -790,7 +799,10 @@ impl Server {
                 };
                 if topics.is_empty()
                     || topics.iter().any(|v| {
-                        !matches!(v.as_str(), Some("imu" | "buttons" | "gestures" | "state"))
+                        !matches!(
+                            v.as_str(),
+                            Some("imu" | "buttons" | "gestures" | "wearing" | "state")
+                        )
                     })
                 {
                     self.queue(
@@ -839,6 +851,7 @@ impl Server {
                         imu,
                         buttons: topics.iter().any(|v| v == "buttons"),
                         gestures: topics.iter().any(|v| v == "gestures"),
+                        wearing: topics.iter().any(|v| v == "wearing"),
                         state: topics.iter().any(|v| v == "state"),
                         native,
                         interval: SECOND / rate,
@@ -848,6 +861,14 @@ impl Server {
                     c.last_sequence = 0;
                 }
                 self.queue(client,api::response(id,json!({"subscribed":topics,"format":if native{"native"}else{"json"},"rate_hz":if native{Value::Null}else{json!(rate)}})),false,false);
+                if topics.iter().any(|v| v == "wearing") {
+                    self.queue(
+                        client,
+                        api::event("wearing", self.wearing.value()),
+                        false,
+                        false,
+                    );
+                }
             }
             "unsubscribe" => {
                 if let Some(c) = self.clients.get_mut(&client) {
@@ -868,7 +889,30 @@ impl Server {
             ),
         }
     }
+    fn publish_wearing(&mut self) {
+        let ids: Vec<_> = self
+            .clients
+            .iter()
+            .filter(|(_, c)| c.subscription.as_ref().is_some_and(|s| s.wearing))
+            .map(|(id, _)| *id)
+            .collect();
+        for id in ids {
+            self.queue(
+                id,
+                api::event("wearing", self.wearing.value()),
+                false,
+                false,
+            );
+        }
+    }
     fn control_frame(&mut self, frame: protocol::Frame, now: u64) {
+        if frame.opcode == 0x273d {
+            if !self.wearing.accept(&frame.body, now) {
+                self.metrics.control_errors += 1;
+            }
+            self.publish_wearing();
+            return;
+        }
         if frame.opcode == 0x272e {
             match keys::tcp(&frame.body, now) {
                 Ok(button) => self.button(button),

@@ -1,5 +1,5 @@
 [Unit]
-Description=XREAL telemetry, button events and known control reads
+Description=XREAL buttons, wearing status and sensor readings
 
 [Service]
 Type=simple

@@ -95,6 +95,21 @@ class InstallerTests(unittest.TestCase):
             with self.assertRaisesRegex(RuntimeError,'receipt'):install.plan_remove(self.user)
         self.assertTrue(keep.exists())
 
+    def test_upgrade_replaces_old_receipted_files_and_preserves_other_settings(self):
+        files = install.layout(self.user)
+        old = {files[name]:(('old '+name).encode(), 0o644 if name == 'unit' else 0o755)
+               for name in ('xreald','xrealctl','unit')}
+        keep = self.home/'other-settings'; keep.write_text('keep')
+        bundle = ROOT/'binaries'/f'{artifacts.version()}-linux-arm64'
+        with patch.object(install,'idle'), patch.object(install,'trusted'):
+            install.apply_install(self.user, old)
+            install.apply_remove(self.user, install.plan_remove(self.user))
+            new = install.plan_install(self.user, bundle)
+            install.apply_install(self.user, new)
+            self.assertEqual(install.plan_remove(self.user), list(new)+[files['receipt']])
+        for path,(data,_mode) in new.items(): self.assertEqual(path.read_bytes(), data)
+        self.assertEqual(keep.read_text(), 'keep')
+
     def test_input_rule_never_overwrites_and_removal_checks_content(self):
         rule = self.home/'70-xreald-input.rules'
         with patch.object(install,'RULE',rule), patch.object(install,'trusted'):
@@ -111,7 +126,7 @@ class InstallerTests(unittest.TestCase):
 
     def test_bundle_rejects_binary_tampering_and_source_drift(self):
         bundle = self.home/'bundle'
-        original = ROOT/'binaries/0.1.2-linux-arm64'
+        original = ROOT/'binaries'/f'{artifacts.version()}-linux-arm64'
         shutil.copytree(original,bundle)
         artifacts.validate(bundle)
         path=bundle/'xreald';data=path.read_bytes();path.write_bytes(data+b'edit')

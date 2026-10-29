@@ -181,7 +181,7 @@ class Peer:
 
 class Service:
     def __init__(self, rate=1400):
-        self.temp = tempfile.TemporaryDirectory(prefix='xr-', dir='/tmp')
+        self.temp = tempfile.TemporaryDirectory(prefix='xr-', dir=os.environ.get('TMPDIR', '/tmp'))
         self.socket = pathlib.Path(self.temp.name) / 'run/control.sock'
         self.peer = Peer(rate)
         self.process = subprocess.Popen([str(DAEMON), '--socket', str(self.socket),

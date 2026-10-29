@@ -8,3 +8,4 @@ pub mod gestures;
 pub mod imu;
 pub mod keys;
 pub mod protocol;
+pub mod wearing;

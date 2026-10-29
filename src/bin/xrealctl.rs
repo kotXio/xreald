@@ -24,7 +24,7 @@ fn run() -> Result<(), String> {
     while let Some(arg) = args.next() {
         match arg.as_str() {
             "--help" | "-h" => {
-                println!("xrealctl [--socket PATH] status|capabilities|get NAME [--cached]\n         [--socket PATH] watch imu|buttons|gestures|state [--rate HZ] [--seconds N] [--native]\n         [--socket PATH] set NAME JSON_VALUE (explicitly disabled in this POC)");
+                println!("xrealctl [--socket PATH] status|capabilities|get NAME [--cached]\n         [--socket PATH] watch imu|buttons|gestures|wearing|state [--rate HZ] [--seconds N] [--native]\n         [--socket PATH] set NAME JSON_VALUE (device writes are disabled)");
                 return Ok(());
             }
             "--socket" => socket = PathBuf::from(args.next().ok_or("missing socket path")?),
