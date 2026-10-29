@@ -1,6 +1,8 @@
 # SPDX-License-Identifier: Apache-2.0
 # Copyright 2026 Kostiantyn Andriiuk <konstantin@andriyuk.com>
 import json
+import contextlib
+import io
 import os
 from pathlib import Path
 import shutil
@@ -135,6 +137,25 @@ class InstallerTests(unittest.TestCase):
         manifest=json.loads((bundle/'manifest.json').read_text());manifest['sources']['Cargo.toml']='0'*64
         (bundle/'manifest.json').write_text(json.dumps(manifest))
         with self.assertRaisesRegex(ValueError,'source version'):artifacts.validate(bundle)
+
+    def test_verify_checks_bundle_without_installation_or_service_access(self):
+        bundle = ROOT/'binaries'/f'{artifacts.version()}-linux-arm64'
+        output = io.StringIO()
+        with patch.object(sys, 'argv', ['install.py', 'verify', '--bundle', str(bundle)]), \
+                patch.object(install, 'layout', side_effect=AssertionError('installation access')), \
+                patch.object(install.subprocess, 'run', side_effect=AssertionError('service access')), \
+                contextlib.redirect_stdout(output):
+            install.main()
+        self.assertIn('Verified binaries and matching source', output.getvalue())
+
+    def test_verify_rejects_damaged_bundle_before_upgrade(self):
+        bundle = self.home/'bundle'
+        shutil.copytree(ROOT/'binaries'/f'{artifacts.version()}-linux-arm64', bundle)
+        (bundle/'xreald').write_bytes(b'damaged')
+        with patch.object(sys, 'argv', ['install.py', 'verify', '--bundle', str(bundle)]), \
+                patch.object(install, 'layout', side_effect=AssertionError('installation access')), \
+                patch.object(install.subprocess, 'run', side_effect=AssertionError('service access')):
+            with self.assertRaisesRegex(ValueError, 'Checksum'): install.main()
 
 
 if __name__ == '__main__': unittest.main()

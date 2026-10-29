@@ -46,15 +46,16 @@ It contains both static binaries, the installer, matching source and licenses.
 No Rust installation is needed on the target.
 
 ```sh
-sha256sum -c xreald-0.1.3-linux-arm64.tar.gz.sha256
-tar -xzf xreald-0.1.3-linux-arm64.tar.gz
-cd xreald-0.1.3-linux-arm64
-python3 -B install.py install
+sha256sum -c xreald-0.1.3-linux-arm64.tar.gz.sha256 && \
+tar -xzf xreald-0.1.3-linux-arm64.tar.gz && \
+cd xreald-0.1.3-linux-arm64 && \
+python3 -B install.py install && \
 python3 -B install.py install --apply
 ```
 
 Run as your normal user on Linux ARM64. The installer refuses to overwrite an
 existing XRealD setup. Then follow [USB networking, permissions and startup](docs/installation.md).
+For an existing installation, use the [upgrade steps](docs/installation.md#upgrade-from-012).
 
 ## Build from source
 

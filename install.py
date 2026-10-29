@@ -136,11 +136,16 @@ def permissions(user, remove, apply):
 
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument('action', choices=('install','remove','permissions','remove-permissions'))
+    parser.add_argument('action', choices=('verify','install','remove','permissions','remove-permissions'))
     parser.add_argument('--bundle', type=Path, default=a.ROOT/'binaries'/f'{a.version()}-linux-arm64')
     parser.add_argument('--user', help='Target account for the root-only input rule operation')
     parser.add_argument('--apply', action='store_true')
     args = parser.parse_args()
+    if args.action == 'verify':
+        if args.apply or args.user: parser.error('verify only checks the bundle; omit --apply and --user')
+        a.validate(args.bundle)
+        print('Verified binaries and matching source: '+str(args.bundle))
+        return
     if args.action.endswith('permissions'):
         if not args.user: parser.error('--user is required for input permissions')
         if args.apply and (os.getuid() != 0 or platform.system() != 'Linux'):

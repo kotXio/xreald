@@ -60,14 +60,17 @@ inside a `0700` directory. Applications using it must run as the same user.
 
 ## Upgrade from 0.1.2
 
-From the new bundle, replace the existing installation as your normal user:
+From the new bundle, replace the existing installation as your normal user.
+The first command checks the new binaries against their source and checksums
+before stopping the old service. The sequence stops if a command fails:
 
 ```sh
-systemctl --user disable --now xreald.service
-python3 -B install.py remove --apply
-systemctl --user daemon-reload
-python3 -B install.py install --apply
-systemctl --user daemon-reload
+python3 -B install.py verify && \
+systemctl --user disable --now xreald.service && \
+python3 -B install.py remove --apply && \
+systemctl --user daemon-reload && \
+python3 -B install.py install --apply && \
+systemctl --user daemon-reload && \
 systemctl --user enable --now xreald.service
 ```
 
@@ -75,6 +78,8 @@ This keeps your USB network settings and input rule. Connected applications need
 to reconnect to the service. Removal checks the old installation receipt and
 refuses changed files; a manually installed copy needs its original uninstall
 procedure. Keep the old bundle if you want to return to it.
+
+`verify` is read-only and also accepts `--bundle` for a locally built bundle.
 
 ## Problems and fixes
 
